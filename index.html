@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Muesca Eventos & mÜbu</title>
+    <style>
+        :root {
+            --primary: #7b2cbf; /* Morado */
+            --secondary: #ffb703; /* Amarillo */
+            --dark: #121212; /* Negro */
+            --light: #ffffff; /* Blanco */
+            --gray: #f4f5f7;
+            --border-radius: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--gray);
+            color: var(--dark);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* HEADER */
+        header {
+            background-color: var(--dark);
+            color: var(--light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 3px solid var(--secondary);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--secondary);
+        }
+
+        nav a {
+            color: var(--light);
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: var(--secondary);
+        }
+
+        /* PAGES */
+        .page {
+            display: none;
+            padding: 40px 5%;
+            flex: 1;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* HERO & CARRUSEL */
+        .hero {
+            background: linear-gradient(135deg, var(--dark), var(--primary));
+            color: var(--light);
+            padding: 60px 20px;
+            text-align: center;
+            border-radius: var(--border-radius);
+            margin-bottom: 30px;
+        }
+
+        .hero h1 {
+            font-size: 2.8rem;
+            color: var(--secondary);
+            margin-bottom: 10px;
+        }
+
+        .carousel-container {
+            width: 100%;
+            max-width: 800px;
+            height: 350px;
+            margin: 30px auto;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            position: relative;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .carousel-slide {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+
+        .carousel-slide.active-slide {
+            display: block;
+        }
+
+        .carousel-caption {
+            position: absolute;
+            bottom: 20px;
+            background: rgba(0,0,0,0.6);
+            color: #fff;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.95rem;
+        }
+
+        .mission-vision {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .mv-card {
+            background: var(--light);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-top: 4px solid var(--primary);
+        }
+
+        .mv-card h3 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        /* MÜBU SECTION CON FOTOS */
+        .mubu-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .mubu-header-box {
+            background: var(--light);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-left: 6px solid var(--secondary);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .mubu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+        .mubu-card {
+            background: var(--light);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid #eaeaea;
+        }
+
+        .mubu-img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            background-color: #ddd;
+        }
+
+        .mubu-card-content {
+            padding: 15px;
+        }
+
+        .mubu-card-title {
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 6px;
+        }
+
+        /* APP LAYOUT SERVICIOS */
+        .app-grid {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 30px;
+        }
+
+        @media (max-width: 900px) {
+            .app-grid { grid-template-columns: 1fr; }
+        }
+
+        .services-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--light);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border: 1px solid #eaeaea;
+        }
+
+        .card-img {
+            width: 100%;
+            height: 130px;
+            object-fit: cover;
+            background-color: #ddd;
+        }
+
+        .card-content {
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            justify-content: space-between;
+        }
+
+        .card-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+
+        .card-price {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .input-qty {
+            width: 100%;
+            padding: 6px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
+        }
+
+        .btn-add {
+            background-color: var(--primary);
+            color: var(--light);
+            border: none;
+            padding: 8px;
+            width: 100%;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-add:hover { background-color: #5a189a; }
+
+        /* SIDEBAR REGISTRO */
+        .sidebar-panel {
+            background: var(--light);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            height: fit-content;
+            border-top: 4px solid var(--secondary);
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        /* MODAL CARRITO */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .modal-content {
+            background: var(--light);
+            padding: 25px;
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 500px;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px; right: 20px;
+            font-size: 1.4rem;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .cart-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 0.85rem;
+        }
+
+        .cart-table th, .cart-table td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-table th { background: #f8f9fa; }
+
+        .btn-delete-item {
+            background: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.75rem;
+        }
+        .btn-delete-item:hover { background: #cc0000; }
+
+        .btn-whatsapp-checkout {
+            display: block;
+            width: 100%;
+            background-color: #25d366;
+            color: white;
+            text-align: center;
+            padding: 12px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 15px;
+            transition: transform 0.2s;
+        }
+
+        .btn-whatsapp-checkout:hover { transform: scale(1.02); }
+
+        /* CARRITO FLOTANTE */
+        .cart-float {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background-color: var(--secondary);
+            color: var(--dark);
+            padding: 12px 22px;
+            border-radius: 50px;
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            cursor: pointer;
+            z-index: 999;
+        }
+
+        footer {
+            background-color: var(--dark);
+            color: var(--light);
+            text-align: center;
+            padding: 20px;
+            margin-top: auto;
+            border-top: 3px solid var(--primary);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="logo">Muesca Eventos</div>
+        <nav>
+            <a onclick="switchPage('inicio')">Inicio</a>
+            <a onclick="switchPage('mubu')">mÜbu</a>
+            <a onclick="switchPage('servicios')">Alquileres</a>
+        </nav>
+    </header>
+
+    <!-- INICIO -->
+    <section id="inicio" class="page active">
+        <div class="hero">
+            <h1>Bienvenidos a Muesca Eventos</h1>
+            <p>Transformamos cada celebración en una experiencia inolvidable llena de alegría, profesionalismo y diversión en Barquisimeto.</p>
+        </div>
+
+        <!-- CARRUSEL DE FOTOS -->
+        <div class="carousel-container">
+            <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80" class="carousel-slide active-slide" alt="Evento 1">
+            <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=800&q=80" class="carousel-slide" alt="Evento 2">
+            <img src="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&w=800&q=80" class="carousel-slide" alt="Evento 3">
+            <div class="carousel-caption">Momentos Mágicos con Muesca Eventos</div>
+        </div>
+
+        <div class="mission-vision">
+            <div class="mv-card">
+                <h3>Misión</h3>
+                <p>Brindar un servicio de alta calidad en entretenimiento, logística y alimentación para eventos, garantizando la diversión y satisfacción total de nuestros clientes a través de un equipo profesional y comprometido.</p>
+            </div>
+            <div class="mv-card">
+                <h3>Visión</h3>
+                <p>Consolidarnos como la empresa líder en la planificación y provisión de servicios para eventos en la región, destacando por nuestra innovación, variedad de atracciones y excelencia operativa.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- MÜBU (SIN EMOJIS, CON GALERÍA DE FOTOS) -->
+    <section id="mubu" class="page">
+        <div class="mubu-container">
+            <div class="mubu-header-box">
+                <h2 style="color: var(--primary); margin-bottom: 12px;">Linea mÜbu</h2>
+                <p style="line-height: 1.6; color: #444; margin-bottom: 10px;">
+                    mÜbu es nuestra marca especializada en estaciones de snacks, barras de bebidas y experiencias culinarias dinámicas para todo tipo de celebraciones. Diseñamos un concepto moderno y fresco que aporta sabor y vistosidad a tus eventos.
+                </p>
+            </div>
+
+            <div class="mubu-grid">
+                <!-- Producto Mubu 1 -->
+                <div class="mubu-card">
+                    <img src="https://images.unsplash.com/photo-1578849278619-e73505e9610f?auto=format&fit=crop&w=500&q=80" class="mubu-img" alt="Cotufas">
+                    <div class="mubu-card-content">
+                        <div class="mubu-card-title">Estacion de Cotufas</div>
+                        <p style="font-size: 0.85rem; color: #666;">Cotufas crujientes y calientes preparadas al momento para consentir a tus invitados.</p>
+                    </div>
+                </div>
+
+                <!-- Producto Mubu 2 -->
+                <div class="mubu-card">
+                    <img src="https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=500&q=80" class="mubu-img" alt="Algodon">
+                    <div class="mubu-card-content">
+                        <div class="mubu-card-title">Estacion de Algodon</div>
+                        <p style="font-size: 0.85rem; color: #666;">Algodón de azúcar dulce y colorido, ideal para la alegría de los más pequeños.</p>
+                    </div>
+                </div>
+
+                <!-- Producto Mubu 3 -->
+                <div class="mubu-card">
+                    <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=500&q=80" class="mubu-img" alt="Bebidas">
+                    <div class="mubu-card-content">
+                        <div class="mubu-card-title">Muesca Bar & Bebidas</div>
+                        <p style="font-size: 0.85rem; color: #666;">Estaciones de bebidas refrescantes y coctelería adaptada a cada ocasión especial.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICIOS Y ALQUILERES -->
+    <section id="servicios" class="page">
+        <h2 style="text-align: center; margin-bottom: 25px; color: var(--dark);">Modulo de Alquileres y Servicios</h2>
+        
+        <div class="app-grid">
+            <!-- CATÁLOGO -->
+            <div class="services-container" id="catalogo-servicios"></div>
+
+            <!-- PANEL REGISTRO CLIENTE & EVENTO -->
+            <div class="sidebar-panel">
+                <h3 style="margin-bottom: 15px; color: var(--primary); border-bottom: 2px solid var(--secondary); padding-bottom: 5px;">1. Datos de Reserva</h3>
+                <div class="form-group">
+                    <label>Nombre Cliente:</label>
+                    <input type="text" id="cli_nombre" placeholder="Ej. Maria Molina">
+                </div>
+                <div class="form-group">
+                    <label>Telefono:</label>
+                    <input type="text" id="cli_tel" placeholder="Ej. 0412-0000000">
+                </div>
+                <div class="form-group">
+                    <label>Nombre del Evento:</label>
+                    <input type="text" id="ev_nombre" placeholder="Ej. Cumpleanos">
+                </div>
+                <div class="form-group">
+                    <label>Fecha del Evento:</label>
+                    <input type="date" id="ev_fecha">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CARRITO FLOTANTE -->
+    <div class="cart-float" onclick="abrirCarrito()">
+        Detalle Evento (<span id="cart-counter">0</span>)
+    </div>
+
+    <!-- MODAL DETALLE EVENTO -->
+    <div id="modalCarrito" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="cerrarCarrito()">&times;</span>
+            <h3 style="color: var(--primary);">Resumen: Detalle Evento</h3>
+            <p id="info-cliente" style="font-size: 0.8rem; color: #666; margin: 8px 0;"></p>
+            
+            <table class="cart-table">
+                <thead>
+                    <tr>
+                        <th>Servicio</th>
+                        <th>Cant/Hrs</th>
+                        <th>Subtotal</th>
+                        <th>Accion</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-cuerpo"></tbody>
+            </table>
+            
+            <div style="margin-top: 15px; text-align: right; font-weight: bold;">
+                Total General: $<span id="total-general">0.00</span>
+            </div>
+
+            <a id="btn-wsp" href="#" target="_blank" class="btn-whatsapp-checkout">
+                Escribenos para procesar tu pago
+            </a>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2026 Muesca Eventos - Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        // Navegación
+        function switchPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        // Carrusel automático
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.carousel-slide');
+        function nextSlide() {
+            slides[currentSlide].classList.remove('active-slide');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active-slide');
+        }
+        setInterval(nextSlide, 3500);
+
+        // Lista Completa de Servicios
+        const listaServicios = [
+            { id: 1, nombre: "Animador", precio: 30 },
+            { id: 2, nombre: "Recreador", precio: 25 },
+            { id: 3, nombre: "DJ", precio: 50 },
+            { id: 4, nombre: "Anfitrion", precio: 30 },
+            { id: 5, nombre: "Mesonero", precio: 20 },
+            { id: 6, nombre: "Operador", precio: 20 },
+            { id: 7, nombre: "Protocolo", precio: 30 },
+            { id: 8, nombre: "Bartender", precio: 35 },
+            { id: 9, nombre: "Cocinero", precio: 35 },
+            { id: 10, nombre: "Pintacaritas", precio: 25 },
+            { id: 11, nombre: "Castillo 3x3 mts", precio: 50 },
+            { id: 12, nombre: "Dinamico 5x5 mts", precio: 70 },
+            { id: 13, nombre: "Multifuncional 5x5 mts", precio: 75 },
+            { id: 14, nombre: "Tobogan 5x3 mts", precio: 65 },
+            { id: 15, nombre: "Futbol 6 9mts", precio: 90 },
+            { id: 16, nombre: "Bumpers 1,5 mts", precio: 60 },
+            { id: 17, nombre: "Inflable Baby Gym 5x5 mts", precio: 70 },
+            { id: 18, nombre: "Malla Elastica", precio: 45 },
+            { id: 19, nombre: "Zona Gamer", precio: 100 },
+            { id: 20, nombre: "Baby Gym 12mts", precio: 120 },
+            { id: 21, nombre: "Zona Arcade", precio: 90 },
+            { id: 22, nombre: "Mesa de Manualidades", precio: 40 },
+            { id: 23, nombre: "Caballetes de Mesa", precio: 35 },
+            { id: 24, nombre: "Futbol Tenis", precio: 40 },
+            { id: 25, nombre: "Tiro al Blanco Futbol", precio: 35 },
+            { id: 26, nombre: "Tiro al Blanco Basket", precio: 35 },
+            { id: 27, nombre: "Mini Juegos", precio: 30 },
+            { id: 28, nombre: "Botes de Pedal", precio: 80 },
+            { id: 29, nombre: "Canon de Espuma", precio: 90 },
+            { id: 30, nombre: "Balancin", precio: 25 },
+            { id: 31, nombre: "50 Cotufas (mubu)", precio: 30 },
+            { id: 32, nombre: "50 Algodon (mubu)", precio: 30 },
+            { id: 33, nombre: "50 Raspados (mubu)", precio: 35 },
+            { id: 34, nombre: "50 Paletas (mubu)", precio: 35 },
+            { id: 35, nombre: "Muesca Bar", precio: 110 },
+            { id: 36, nombre: "Estacion de Bebidas (mubu)", precio: 60 }
+        ];
+
+        // Renderizar catálogo
+        const contenedor = document.getElementById('catalogo-servicios');
+        listaServicios.forEach(s => {
+            contenedor.innerHTML += `
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=400&q=80" class="card-img" alt="Servicio">
+                    <div class="card-content">
+                        <div>
+                            <div class="card-title">${s.nombre}</div>
+                            <div class="card-price">$${s.precio}.00</div>
+                        </div>
+                        <div>
+                            <input type="number" id="qty-${s.id}" class="input-qty" value="1" min="1">
+                            <button class="btn-add" onclick="agregarItem('${s.nombre}', ${s.precio}, 'qty-${s.id}')">Agregar</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+
+        let detalleEvento = [];
+
+        function agregarItem(nombre, precio, inputId) {
+            let cliente = document.getElementById('cli_nombre').value;
+            let fecha = document.getElementById('ev_fecha').value;
+
+            if(!cliente || !fecha) {
+                alert("Por favor ingresa el Nombre del Cliente y la Fecha del Evento primero.");
+                return;
+            }
+
+            let cantidad = parseInt(document.getElementById(inputId).value) || 1;
+            let subtotal = cantidad * precio;
+
+            let existente = detalleEvento.find(item => item.servicio === nombre);
+            if(existente) {
+                existente.cantidad += cantidad;
+                existente.subtotal = existente.cantidad * precio;
+            } else {
+                detalleEvento.push({ servicio: nombre, cantidad: cantidad, subtotal: subtotal });
+            }
+
+            document.getElementById('cart-counter').innerText = detalleEvento.length;
+            alert(`¡"${nombre}" agregado correctamente!`);
+        }
+
+        // Función para eliminar un ítem del carrito
+        function eliminarItem(index) {
+            detalleEvento.splice(index, 1);
+            document.getElementById('cart-counter').innerText = detalleEvento.length;
+            abrirCarrito(); // Refrescar la tabla del modal
+        }
+
+        function abrirCarrito() {
+            let cliente = document.getElementById('cli_nombre').value;
+            let evento = document.getElementById('ev_nombre').value;
+            let fecha = document.getElementById('ev_fecha').value;
+
+            if(!cliente || !fecha) {
+                alert("Faltan datos obligatorios del cliente o la fecha del evento.");
+                return;
+            }
+
+            document.getElementById('info-cliente').innerText = `Cliente: ${cliente} | Evento: ${evento || 'Especial'} | Fecha: ${fecha}`;
+            
+            let tbody = document.getElementById('tabla-cuerpo');
+            tbody.innerHTML = "";
+            let total = 0;
+
+            detalleEvento.forEach((item, index) => {
+                total += item.subtotal;
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${item.servicio}</td>
+                        <td>${item.cantidad}</td>
+                        <td>$${item.subtotal.toFixed(2)}</td>
+                        <td><button class="btn-delete-item" onclick="eliminarItem(${index})">❌</button></td>
+                    </tr>
+                `;
+            });
+
+            document.getElementById('total-general').innerText = total.toFixed(2);
+
+            // Generar enlace para WhatsApp con el resumen
+            let mensajeWsp = `Hola, soy ${cliente}. Deseo procesar el pago de mi evento "${evento || 'Especial'}" para la fecha ${fecha}. Resumen:%0A`;
+            detalleEvento.forEach(i => {
+                mensajeWsp += `- ${i.servicio} (Cant: ${i.cantidad}) - Subtotal: $${i.subtotal}%0A`;
+            });
+            mensajeWsp += `TOTAL GENERAL: $${total.toFixed(2)}`;
+
+            document.getElementById('btn-wsp').href = `https://wa.me/584120000000?text=${mensajeWsp}`;
+
+            document.getElementById('modalCarrito').style.display = 'flex';
+        }
+
+        function cerrarCarrito() {
+            document.getElementById('modalCarrito').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
